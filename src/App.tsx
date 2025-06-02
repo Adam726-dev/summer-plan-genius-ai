@@ -9,6 +9,7 @@ import { PlanProvider } from "@/context/PlanContext";
 import Index from "./pages/Index";
 import SectionPage from "./pages/SectionPage";
 import Summary from "./pages/Summary";
+import BMRCalculator from "./pages/BMRCalculator";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -27,6 +28,7 @@ const App = () => (
               <Route path="/silownia" element={<SectionPage />} />
               <Route path="/imprezy" element={<SectionPage />} />
               <Route path="/wakacje" element={<SectionPage />} />
+              <Route path="/kalkulator-bmr" element={<BMRCalculator />} />
               <Route path="/podsumowanie" element={<Summary />} />
               <Route path="*" element={<NotFound />} />
             </Routes>

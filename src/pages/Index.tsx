@@ -35,13 +35,21 @@ const Index = () => {
             imprezy i wakacje dopasowane do Twoich potrzeb!
           </p>
           
-          {hasAnyChoices && (
-            <Link to="/podsumowanie">
-              <Button className="bg-summer-coral hover:bg-summer-coral/90 text-white text-lg px-8 py-3 mb-8">
-                🧾 Zobacz swój plan
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+            <Link to="/kalkulator-bmr">
+              <Button className="bg-summer-coral hover:bg-summer-coral/90 text-white text-lg px-8 py-3">
+                🧮 Kalkulator BMR & Plan Odchudzania
               </Button>
             </Link>
-          )}
+            
+            {hasAnyChoices && (
+              <Link to="/podsumowanie">
+                <Button variant="outline" className="text-lg px-8 py-3">
+                  🧾 Zobacz swój plan
+                </Button>
+              </Link>
+            )}
+          </div>
         </div>
 
         {/* Sections Grid */}
