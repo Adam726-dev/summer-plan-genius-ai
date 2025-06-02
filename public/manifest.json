@@ -1,0 +1,19 @@
+
+{
+  "name": "Twój Plan na Lato",
+  "short_name": "Plan Lato",
+  "description": "Stwórz swój idealny plan na lato - dieta, siłownia, imprezy i wakacje w jednym miejscu!",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#4FB3D9",
+  "background_color": "#ffffff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
