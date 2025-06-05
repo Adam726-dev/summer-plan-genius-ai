@@ -5,9 +5,6 @@ import { usePlan } from '@/context/PlanContext';
 import LoginForm from '@/components/LoginForm';
 import Navigation from '@/components/Navigation';
 import AIHelper from '@/components/AIHelper';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
 import { ChevronRight } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
@@ -39,22 +36,22 @@ const Index = () => {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
             <Link to="/kalkulator-bmr">
-              <Button className="bg-summer-coral hover:bg-summer-coral/90 text-white text-lg px-8 py-3">
+              <button className="bg-summer-coral hover:bg-summer-coral/90 text-white text-lg px-8 py-3 rounded-md font-medium transition-colors">
                 🧮 Kalkulator BMR & Plan Odchudzania
-              </Button>
+              </button>
             </Link>
             
             {hasAnyChoices && (
               <Link to="/podsumowanie">
-                <Button variant="outline" className="text-lg px-8 py-3">
+                <button className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 text-lg px-8 py-3 rounded-md font-medium transition-colors">
                   🧾 Zobacz swój plan
-                </Button>
+                </button>
               </Link>
             )}
           </div>
         </div>
 
-        {/* Sections Grid - SectionCard functionality embedded */}
+        {/* Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           {sectionsData.map((section) => {
             const hasChoice = choices[section.id as keyof typeof choices];
@@ -65,28 +62,28 @@ const Index = () => {
             return (
               <div key={section.id} className="animate-scale-in">
                 <Link to={`/${section.id}`}>
-                  <Card className={`${section.color} border-0 shadow-lg card-hover cursor-pointer relative overflow-hidden`}>
-                    <CardContent className="p-6 text-center">
+                  <div className={`${section.color} border-0 shadow-lg card-hover cursor-pointer relative overflow-hidden rounded-lg`}>
+                    <div className="p-6 text-center">
                       <div className="text-4xl mb-3">{section.icon}</div>
                       <h3 className="text-xl font-bold text-white mb-2">{section.name}</h3>
                       <p className="text-white/90 text-sm mb-4">{section.description}</p>
                       
                       {hasChoice && selectedOption ? (
-                        <Badge variant="secondary" className="mb-3">
+                        <span className="inline-flex items-center rounded-full bg-white/20 px-2.5 py-0.5 text-xs font-semibold text-white mb-3">
                           ✓ {selectedOption.name}
-                        </Badge>
+                        </span>
                       ) : (
-                        <Badge variant="outline" className="mb-3 bg-white/20 text-white border-white/30">
+                        <span className="inline-flex items-center rounded-full bg-white/20 border border-white/30 px-2.5 py-0.5 text-xs font-semibold text-white mb-3">
                           Nie wybrano
-                        </Badge>
+                        </span>
                       )}
                       
                       <div className="flex items-center justify-center text-white/80">
                         <span className="text-sm">Wybierz opcję</span>
                         <ChevronRight className="h-4 w-4 ml-1" />
                       </div>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </div>
                 </Link>
               </div>
             );
@@ -106,14 +103,14 @@ const Index = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link to="/dieta">
-              <Button variant="secondary" className="px-8 py-3">
+              <button className="bg-white text-summer-blue hover:bg-gray-100 px-8 py-3 rounded-md font-medium transition-colors">
                 🥗 Zacznij od diety
-              </Button>
+              </button>
             </Link>
             <Link to="/silownia">
-              <Button variant="outline" className="px-8 py-3 border-white text-white hover:bg-white hover:text-summer-blue">
+              <button className="border border-white text-white hover:bg-white hover:text-summer-blue px-8 py-3 rounded-md font-medium transition-colors">
                 🏋️‍♀️ Wybierz siłownię
-              </Button>
+              </button>
             </Link>
           </div>
         </div>

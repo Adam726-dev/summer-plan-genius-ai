@@ -3,17 +3,13 @@ import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
 import Navigation from '@/components/Navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Check } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'sonner';
 
 const SectionPage: React.FC = () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const { choices, updateChoice } = usePlan();
-  const { toast } = useToast();
   
   const section = sectionsData.find(s => s.id === sectionId);
   
@@ -23,7 +19,9 @@ const SectionPage: React.FC = () => {
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900">Sekcja nie znaleziona</h1>
           <Link to="/">
-            <Button className="mt-4">Powróć do strony głównej</Button>
+            <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors">
+              Powróć do strony głównej
+            </button>
           </Link>
         </div>
       </div>
@@ -34,8 +32,7 @@ const SectionPage: React.FC = () => {
 
   const handleSelectOption = (optionId: number) => {
     updateChoice(section.id as keyof typeof choices, optionId);
-    toast({
-      title: "Świetny wybór! 🎉",
+    toast("Świetny wybór! 🎉", {
       description: `Dodano ${section.name.toLowerCase()} do Twojego planu`,
     });
   };
@@ -48,10 +45,10 @@ const SectionPage: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <Link to="/">
-            <Button variant="ghost" className="mb-4">
+            <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Powróć do strony głównej
-            </Button>
+            </button>
           </Link>
           
           <div className="text-center">
@@ -61,26 +58,26 @@ const SectionPage: React.FC = () => {
           </div>
         </div>
 
-        {/* Options Grid - OptionCard functionality embedded */}
+        {/* Options Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
           {section.options.map((option) => {
             const isSelected = selectedOptionId === option.id;
             
             return (
               <div key={option.id} className="animate-fade-in">
-                <Card className={`border-2 transition-all duration-300 ${
+                <div className={`border-2 transition-all duration-300 rounded-lg bg-white shadow-sm ${
                   isSelected 
                     ? 'border-summer-blue bg-summer-blue/5 shadow-lg' 
                     : 'border-gray-200 hover:border-summer-blue/50'
                 }`}>
-                  <CardContent className="p-6">
+                  <div className="p-6">
                     <div className="flex justify-between items-start mb-4">
                       <div className="text-3xl">{option.image}</div>
                       {isSelected && (
-                        <Badge className="bg-summer-blue text-white">
+                        <span className="inline-flex items-center rounded-full bg-summer-blue px-2.5 py-0.5 text-xs font-semibold text-white">
                           <Check className="h-3 w-3 mr-1" />
                           Wybrane
-                        </Badge>
+                        </span>
                       )}
                     </div>
                     
@@ -104,18 +101,18 @@ const SectionPage: React.FC = () => {
                       ))}
                     </div>
                     
-                    <Button 
+                    <button 
                       onClick={() => handleSelectOption(option.id)}
-                      className={`w-full ${
+                      className={`w-full py-2 px-4 rounded-md font-medium transition-colors ${
                         isSelected 
-                          ? 'bg-summer-blue hover:bg-summer-blue/90' 
-                          : 'bg-gray-900 hover:bg-gray-800'
-                      } text-white`}
+                          ? 'bg-summer-blue hover:bg-summer-blue/90 text-white' 
+                          : 'bg-gray-900 hover:bg-gray-800 text-white'
+                      }`}
                     >
                       {isSelected ? 'Wybrane!' : 'Wybierz tę opcję'}
-                    </Button>
-                  </CardContent>
-                </Card>
+                    </button>
+                  </div>
+                </div>
               </div>
             );
           })}
@@ -132,14 +129,14 @@ const SectionPage: React.FC = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link to="/">
-                <Button variant="outline" className="px-6 py-3">
+                <button className="border border-gray-300 bg-white hover:bg-gray-50 text-gray-700 px-6 py-3 rounded-md font-medium transition-colors">
                   🏠 Strona główna
-                </Button>
+                </button>
               </Link>
               <Link to="/podsumowanie">
-                <Button className="bg-summer-blue hover:bg-summer-blue/90 text-white px-6 py-3">
+                <button className="bg-summer-blue hover:bg-summer-blue/90 text-white px-6 py-3 rounded-md font-medium transition-colors">
                   📋 Zobacz pełny plan
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
