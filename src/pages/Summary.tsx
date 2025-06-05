@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
 import { useAuth } from '@/context/AuthContext';
 import Navigation from '@/components/Navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Calendar, Share2 } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
 import { useToast } from '@/hooks/use-toast';
@@ -31,10 +28,7 @@ const Summary: React.FC = () => {
 
   const handleAddToCalendar = () => {
     // Symulacja dodawania do Google Calendar
-    toast({
-      title: "Kalendarz zaktualizowany! 📅",
-      description: "Twój plan został dodany do Google Calendar",
-    });
+    toast("Twój plan został dodany do Google Calendar");
   };
 
   const handleShare = () => {
@@ -47,10 +41,7 @@ const Summary: React.FC = () => {
     } else {
       // Fallback - kopiowanie do clipboard
       navigator.clipboard.writeText(window.location.href);
-      toast({
-        title: "Link skopiowany! 🔗",
-        description: "Możesz teraz udostępnić swój plan znajomym",
-      });
+      toast("Możesz teraz udostępnić swój plan znajomym");
     }
   };
 
@@ -66,9 +57,9 @@ const Summary: React.FC = () => {
               Zacznij od wyboru opcji w dowolnej sekcji, aby zobaczyć swój plan!
             </p>
             <Link to="/">
-              <Button className="bg-summer-blue hover:bg-summer-blue/90 text-white">
+              <button className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium transition-colors">
                 🏠 Powróć do strony głównej
-              </Button>
+              </button>
             </Link>
           </div>
         </main>
@@ -84,10 +75,10 @@ const Summary: React.FC = () => {
         {/* Header */}
         <div className="mb-8">
           <Link to="/">
-            <Button variant="ghost" className="mb-4">
+            <button className="mb-4 flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-100 rounded-md transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Powróć do strony głównej
-            </Button>
+            </button>
           </Link>
           
           <div className="text-center mb-8">
@@ -103,22 +94,26 @@ const Summary: React.FC = () => {
         {/* Summary Cards */}
         <div className="space-y-6 mb-8">
           {selectedSections.map(({ section, option }) => (
-            <Card key={section!.id} className="shadow-lg border-l-4" style={{borderLeftColor: section!.color.replace('bg-', '#')}}>
-              <CardHeader className="pb-3">
-                <CardTitle className="flex items-center">
-                  <span className="text-2xl mr-3">{section!.icon}</span>
-                  <span>{section!.name}</span>
-                  <Badge className="ml-auto bg-green-500 text-white">Wybrane</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div key={section!.id} className="bg-white rounded-lg shadow-lg border border-gray-200 border-l-4" style={{borderLeftColor: '#3B82F6'}}>
+              <div className="p-6 border-b border-gray-200">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-xl font-semibold flex items-center">
+                    <span className="text-2xl mr-3">{section!.icon}</span>
+                    <span>{section!.name}</span>
+                  </h2>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    Wybrane
+                  </span>
+                </div>
+              </div>
+              <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
                     <h4 className="font-semibold text-lg">{option!.name}</h4>
                     <p className="text-gray-600 text-sm">{option!.description}</p>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-summer-blue">{option!.price}</div>
+                    <div className="text-2xl font-bold text-blue-600">{option!.price}</div>
                     <div className="flex items-center mt-1">
                       <span className="text-yellow-500">⭐</span>
                       <span className="ml-1 text-sm text-gray-600">{option!.rating}</span>
@@ -135,48 +130,47 @@ const Summary: React.FC = () => {
                     </div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           ))}
         </div>
 
         {/* Total Cost */}
-        <Card className="bg-gradient-to-r from-summer-blue to-summer-mint text-white mb-8">
-          <CardContent className="p-6 text-center">
+        <div className="bg-gradient-to-r from-blue-600 to-green-600 text-white rounded-lg mb-8">
+          <div className="p-6 text-center">
             <h3 className="text-2xl font-bold mb-2">Szacunkowy koszt całego planu</h3>
             <div className="text-4xl font-bold">{totalCost} zł</div>
             <p className="text-white/90 mt-2">
               {selectedSections.length} {selectedSections.length === 1 ? 'wybrana aktywność' : 'wybrane aktywności'}
             </p>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {/* Action Buttons */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-          <Button 
+          <button 
             onClick={handleAddToCalendar}
-            className="bg-green-500 hover:bg-green-600 text-white p-6 text-lg"
+            className="bg-green-500 hover:bg-green-600 text-white p-6 text-lg rounded-md font-medium transition-colors flex items-center justify-center"
           >
             <Calendar className="h-5 w-5 mr-2" />
             Dodaj do Google Calendar
-          </Button>
+          </button>
           
-          <Button 
+          <button 
             onClick={handleShare}
-            variant="outline"
-            className="p-6 text-lg border-2"
+            className="border-2 border-gray-300 bg-white hover:bg-gray-50 text-gray-700 p-6 text-lg rounded-md font-medium transition-colors flex items-center justify-center"
           >
             <Share2 className="h-5 w-5 mr-2" />
             Udostępnij plan
-          </Button>
+          </button>
         </div>
 
         {/* Next Steps */}
-        <Card className="bg-white">
-          <CardHeader>
-            <CardTitle>🚀 Następne kroki</CardTitle>
-          </CardHeader>
-          <CardContent>
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold">🚀 Następne kroki</h2>
+          </div>
+          <div className="p-6">
             <div className="space-y-4">
               <div className="flex items-start">
                 <span className="text-2xl mr-3">📞</span>
@@ -200,8 +194,8 @@ const Summary: React.FC = () => {
                 </div>
               </div>
             </div>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </main>
     </div>
   );

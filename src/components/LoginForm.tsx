@@ -1,9 +1,6 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 const LoginForm: React.FC = () => {
   const [name, setName] = useState('');
@@ -20,48 +17,48 @@ const LoginForm: React.FC = () => {
   return (
     <div className="min-h-screen summer-gradient flex items-center justify-center p-4">
       <div className="w-full max-w-md animate-fade-in">
-        <Card className="shadow-2xl border-0">
-          <CardHeader className="text-center pb-6">
+        <div className="bg-white rounded-lg shadow-2xl border-0">
+          <div className="text-center p-6 pb-6">
             <div className="text-6xl mb-4">☀️</div>
-            <CardTitle className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">
               Twój Plan na Lato
-            </CardTitle>
-            <CardDescription className="text-lg">
+            </h1>
+            <p className="text-lg text-gray-600">
               Zaloguj się i stwórz swój idealny plan wakacyjny!
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
+            </p>
+          </div>
+          <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <Input
+                <input
                   type="text"
                   placeholder="Twoje imię"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="h-12 text-base"
+                  className="w-full h-12 px-4 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
               <div>
-                <Input
+                <input
                   type="email"
                   placeholder="Twój email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="h-12 text-base"
+                  className="w-full h-12 px-4 text-base border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   required
                 />
               </div>
-              <Button 
+              <button 
                 type="submit" 
-                className="w-full h-12 text-base bg-summer-blue hover:bg-summer-blue/90 text-white"
+                className="w-full h-12 text-base bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white rounded-md font-medium transition-colors"
                 disabled={!name.trim() || !email.trim()}
               >
                 Zacznij planować! 🚀
-              </Button>
+              </button>
             </form>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
       </div>
     </div>
   );

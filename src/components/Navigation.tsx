@@ -1,7 +1,6 @@
 
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
-import { Button } from '@/components/ui/button';
 import { LogOut, Home } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -25,17 +24,20 @@ const Navigation: React.FC = () => {
             
             {location.pathname !== '/' && (
               <Link to="/">
-                <Button variant="ghost" size="sm">
+                <button className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-100 rounded-md transition-colors">
                   <Home className="h-4 w-4 mr-2" />
                   Strona główna
-                </Button>
+                </button>
               </Link>
             )}
             
-            <Button onClick={logout} variant="outline" size="sm">
+            <button 
+              onClick={logout} 
+              className="flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-md transition-colors"
+            >
               <LogOut className="h-4 w-4 mr-2" />
               Wyloguj
-            </Button>
+            </button>
           </div>
         </div>
       </div>

@@ -1,11 +1,5 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
 
 const AIHelper: React.FC = () => {
@@ -19,11 +13,7 @@ const AIHelper: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!budget || !goal || !lifestyle) {
-      toast({
-        title: "Błąd",
-        description: "Proszę wypełnić wszystkie pola",
-        variant: "destructive"
-      });
+      toast("Proszę wypełnić wszystkie pola");
       return;
     }
 
@@ -49,86 +39,83 @@ const AIHelper: React.FC = () => {
       setRecommendation(mockRecommendation);
       setIsLoading(false);
       
-      toast({
-        title: "Gotowe! 🎉",
-        description: "AI przygotowało Twoje spersonalizowane rekomendacje"
-      });
+      toast("AI przygotowało Twoje spersonalizowane rekomendacje");
     }, 2000);
   };
 
   return (
-    <Card className="max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle className="flex items-center">
+    <div className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg border border-gray-200">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-xl font-semibold flex items-center">
           <span className="text-2xl mr-3">🤖</span>
           AI Asystent Planowania
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-6">
+        </h2>
+      </div>
+      <div className="p-6 space-y-6">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="budget">Budżet na cały plan (zł)</Label>
-              <Input
+              <label htmlFor="budget" className="block text-sm font-medium text-gray-700 mb-1">Budżet na cały plan (zł)</label>
+              <input
                 id="budget"
                 type="number"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
                 placeholder="np. 2000"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             
             <div>
-              <Label htmlFor="goal">Główny cel na lato</Label>
-              <Select value={goal} onValueChange={setGoal}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Wybierz cel" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="schudnac">Schudnąć</SelectItem>
-                  <SelectItem value="nabudowac-mase">Nabudować masę</SelectItem>
-                  <SelectItem value="byc-fit">Być fit i zdrowym</SelectItem>
-                  <SelectItem value="relaks">Maksymalny relaks</SelectItem>
-                  <SelectItem value="przygoda">Przygoda i nowe doświadczenia</SelectItem>
-                </SelectContent>
-              </Select>
+              <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">Główny cel na lato</label>
+              <select 
+                value={goal} 
+                onChange={(e) => setGoal(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              >
+                <option value="">Wybierz cel</option>
+                <option value="schudnac">Schudnąć</option>
+                <option value="nabudowac-mase">Nabudować masę</option>
+                <option value="byc-fit">Być fit i zdrowym</option>
+                <option value="relaks">Maksymalny relaks</option>
+                <option value="przygoda">Przygoda i nowe doświadczenia</option>
+              </select>
             </div>
           </div>
           
           <div>
-            <Label htmlFor="lifestyle">Opisz swój styl życia</Label>
-            <Textarea
+            <label htmlFor="lifestyle" className="block text-sm font-medium text-gray-700 mb-1">Opisz swój styl życia</label>
+            <textarea
               id="lifestyle"
               value={lifestyle}
               onChange={(e) => setLifestyle(e.target.value)}
               placeholder="np. Pracuję zdalnie, mam dużo czasu, lubię aktywny wypoczynek..."
               rows={3}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           
-          <Button 
+          <button 
             type="submit" 
             disabled={isLoading}
-            className="w-full bg-summer-blue hover:bg-summer-blue/90 text-white"
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white py-2 px-4 rounded-md font-medium transition-colors"
           >
             {isLoading ? '🤔 AI myśli...' : '✨ Wygeneruj plan z AI'}
-          </Button>
+          </button>
         </form>
         
         {recommendation && (
-          <Card className="bg-gradient-to-r from-summer-blue/10 to-summer-mint/10 border-summer-blue/20">
-            <CardContent className="p-6">
-              <h3 className="font-bold text-lg mb-4 text-summer-blue">
-                🎯 Twoje spersonalizowane rekomendacje:
-              </h3>
-              <div className="whitespace-pre-line text-gray-700 leading-relaxed">
-                {recommendation}
-              </div>
-            </CardContent>
-          </Card>
+          <div className="bg-gradient-to-r from-blue-50 to-green-50 border border-blue-200 rounded-lg p-6">
+            <h3 className="font-bold text-lg mb-4 text-blue-700">
+              🎯 Twoje spersonalizowane rekomendacje:
+            </h3>
+            <div className="whitespace-pre-line text-gray-700 leading-relaxed">
+              {recommendation}
+            </div>
+          </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 };
 

@@ -2,12 +2,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Navigation from '@/components/Navigation';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Calculator, Target, TrendingDown } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
@@ -99,11 +93,7 @@ const BMRCalculator: React.FC = () => {
     e.preventDefault();
     
     if (!formData.age || !formData.weight || !formData.height || !formData.activityLevel || !formData.goal) {
-      toast({
-        title: "Błąd",
-        description: "Proszę wypełnić wszystkie pola",
-        variant: "destructive"
-      });
+      toast("Proszę wypełnić wszystkie pola");
       return;
     }
 
@@ -142,10 +132,7 @@ const BMRCalculator: React.FC = () => {
       setResult(calculationResult);
       setIsLoading(false);
       
-      toast({
-        title: "Obliczenia gotowe! 🎯",
-        description: "Twój spersonalizowany plan został wygenerowany"
-      });
+      toast("Twój spersonalizowany plan został wygenerowany");
     }, 2000);
   };
 
@@ -156,10 +143,10 @@ const BMRCalculator: React.FC = () => {
       <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
           <Link to="/">
-            <Button variant="ghost" className="mb-4">
+            <button className="mb-4 flex items-center px-3 py-1.5 text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-100 rounded-md transition-colors">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Powróć do strony głównej
-            </Button>
+            </button>
           </Link>
           
           <div className="text-center mb-8">
@@ -173,192 +160,199 @@ const BMRCalculator: React.FC = () => {
           </div>
         </div>
 
-        <Card className="mb-8">
-          <CardHeader>
-            <CardTitle className="flex items-center">
+        <div className="bg-white rounded-lg shadow-lg border border-gray-200 mb-8">
+          <div className="p-6 border-b border-gray-200">
+            <h2 className="text-xl font-semibold flex items-center">
               <Calculator className="h-6 w-6 mr-2" />
               Wprowadź swoje dane
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
+            </h2>
+          </div>
+          <div className="p-6">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <Label htmlFor="age">Wiek (lata)</Label>
-                  <Input
+                  <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">Wiek (lata)</label>
+                  <input
                     id="age"
                     type="number"
                     value={formData.age || ''}
                     onChange={(e) => setFormData({...formData, age: parseInt(e.target.value) || 0})}
                     placeholder="np. 25"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
                 
                 <div>
-                  <Label htmlFor="gender">Płeć</Label>
-                  <Select value={formData.gender} onValueChange={(value: 'male' | 'female') => setFormData({...formData, gender: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Wybierz płeć" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Mężczyzna</SelectItem>
-                      <SelectItem value="female">Kobieta</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">Płeć</label>
+                  <select 
+                    value={formData.gender} 
+                    onChange={(e) => setFormData({...formData, gender: e.target.value as 'male' | 'female'})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="male">Mężczyzna</option>
+                    <option value="female">Kobieta</option>
+                  </select>
                 </div>
 
                 <div>
-                  <Label htmlFor="weight">Aktualna waga (kg)</Label>
-                  <Input
+                  <label htmlFor="weight" className="block text-sm font-medium text-gray-700 mb-1">Aktualna waga (kg)</label>
+                  <input
                     id="weight"
                     type="number"
                     value={formData.weight || ''}
                     onChange={(e) => setFormData({...formData, weight: parseInt(e.target.value) || 0})}
                     placeholder="np. 70"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="height">Wzrost (cm)</Label>
-                  <Input
+                  <label htmlFor="height" className="block text-sm font-medium text-gray-700 mb-1">Wzrost (cm)</label>
+                  <input
                     id="height"
                     type="number"
                     value={formData.height || ''}
                     onChange={(e) => setFormData({...formData, height: parseInt(e.target.value) || 0})}
                     placeholder="np. 175"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="targetWeight">Docelowa waga (kg)</Label>
-                  <Input
+                  <label htmlFor="targetWeight" className="block text-sm font-medium text-gray-700 mb-1">Docelowa waga (kg)</label>
+                  <input
                     id="targetWeight"
                     type="number"
                     value={formData.targetWeight || ''}
                     onChange={(e) => setFormData({...formData, targetWeight: parseInt(e.target.value) || 0})}
                     placeholder="np. 65"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                   />
                 </div>
 
                 <div>
-                  <Label htmlFor="activity">Poziom aktywności</Label>
-                  <Select value={formData.activityLevel} onValueChange={(value) => setFormData({...formData, activityLevel: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Wybierz poziom" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="sedentary">Siedzący (brak ćwiczeń)</SelectItem>
-                      <SelectItem value="light">Lekko aktywny (1-3 dni/tydzień)</SelectItem>
-                      <SelectItem value="moderate">Umiarkowanie aktywny (3-5 dni/tydzień)</SelectItem>
-                      <SelectItem value="active">Bardzo aktywny (6-7 dni/tydzień)</SelectItem>
-                      <SelectItem value="very-active">Ekstremalnie aktywny (2x dziennie)</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <label htmlFor="activity" className="block text-sm font-medium text-gray-700 mb-1">Poziom aktywności</label>
+                  <select 
+                    value={formData.activityLevel} 
+                    onChange={(e) => setFormData({...formData, activityLevel: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  >
+                    <option value="">Wybierz poziom</option>
+                    <option value="sedentary">Siedzący (brak ćwiczeń)</option>
+                    <option value="light">Lekko aktywny (1-3 dni/tydzień)</option>
+                    <option value="moderate">Umiarkowanie aktywny (3-5 dni/tydzień)</option>
+                    <option value="active">Bardzo aktywny (6-7 dni/tydzień)</option>
+                    <option value="very-active">Ekstremalnie aktywny (2x dziennie)</option>
+                  </select>
                 </div>
               </div>
 
               <div>
-                <Label htmlFor="goal">Cel</Label>
-                <Select value={formData.goal} onValueChange={(value) => setFormData({...formData, goal: value})}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Wybierz cel" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="weight-loss">Utrata wagi</SelectItem>
-                    <SelectItem value="muscle-gain">Przyrost masy mięśniowej</SelectItem>
-                    <SelectItem value="maintenance">Utrzymanie wagi</SelectItem>
-                  </SelectContent>
-                </Select>
+                <label htmlFor="goal" className="block text-sm font-medium text-gray-700 mb-1">Cel</label>
+                <select 
+                  value={formData.goal} 
+                  onChange={(e) => setFormData({...formData, goal: e.target.value})}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Wybierz cel</option>
+                  <option value="weight-loss">Utrata wagi</option>
+                  <option value="muscle-gain">Przyrost masy mięśniowej</option>
+                  <option value="maintenance">Utrzymanie wagi</option>
+                </select>
               </div>
 
-              <Button 
+              <button 
                 type="submit" 
                 disabled={isLoading}
-                className="w-full bg-summer-blue hover:bg-summer-blue/90 text-white"
+                className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white py-2 px-4 rounded-md font-medium transition-colors"
               >
                 {isLoading ? '🧮 Obliczam...' : '📊 Oblicz i dobierz plan'}
-              </Button>
+              </button>
             </form>
-          </CardContent>
-        </Card>
+          </div>
+        </div>
 
         {result && (
           <div className="space-y-6">
             {/* Wyniki BMR */}
-            <Card className="bg-gradient-to-r from-summer-blue/10 to-summer-mint/10">
-              <CardHeader>
-                <CardTitle className="flex items-center">
+            <div className="bg-gradient-to-r from-blue-50 to-green-50 rounded-lg border border-blue-200">
+              <div className="p-6 border-b border-blue-200">
+                <h2 className="text-xl font-semibold flex items-center">
                   <Target className="h-6 w-6 mr-2" />
                   Twoje wyniki metaboliczne
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h2>
+              </div>
+              <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-summer-blue">{Math.round(result.bmr)}</div>
+                    <div className="text-3xl font-bold text-blue-600">{Math.round(result.bmr)}</div>
                     <div className="text-sm text-gray-600">BMR (kcal/dzień)</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-summer-coral">{Math.round(result.dailyCalories)}</div>
+                    <div className="text-3xl font-bold text-orange-600">{Math.round(result.dailyCalories)}</div>
                     <div className="text-sm text-gray-600">Zapotrzebowanie (kcal/dzień)</div>
                   </div>
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-summer-mint">{Math.round(result.dailyDeficit)}</div>
+                    <div className="text-3xl font-bold text-green-600">{Math.round(result.dailyDeficit)}</div>
                     <div className="text-sm text-gray-600">Deficyt (kcal/dzień)</div>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Rekomendowany catering */}
-            <Card>
-              <CardHeader>
-                <CardTitle>🥗 Rekomendowany catering</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-xl font-semibold">🥗 Rekomendowany catering</h2>
+              </div>
+              <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-xl font-bold">{result.recommendedCatering.name}</h3>
                     <p className="text-gray-600">{result.recommendedCatering.calories} kcal/dzień</p>
-                    <Badge className="mt-2">{result.recommendedCatering.type}</Badge>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 mt-2">
+                      {result.recommendedCatering.type}
+                    </span>
                   </div>
-                  <div className="text-2xl font-bold text-summer-blue">
+                  <div className="text-2xl font-bold text-blue-600">
                     {result.recommendedCatering.price} zł/dzień
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Rekomendowany trening */}
-            <Card>
-              <CardHeader>
-                <CardTitle>🏋️‍♀️ Rekomendowany trening</CardTitle>
-              </CardHeader>
-              <CardContent>
+            <div className="bg-white rounded-lg shadow-lg border border-gray-200">
+              <div className="p-6 border-b border-gray-200">
+                <h2 className="text-xl font-semibold">🏋️‍♀️ Rekomendowany trening</h2>
+              </div>
+              <div className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <h3 className="text-xl font-bold">{result.recommendedWorkout.name}</h3>
                     <p className="text-gray-600">
                       {result.recommendedWorkout.caloriesBurn} kcal/sesja × {result.recommendedWorkout.sessions} sesji/tydzień
                     </p>
-                    <Badge className="mt-2">{result.recommendedWorkout.type}</Badge>
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800 mt-2">
+                      {result.recommendedWorkout.type}
+                    </span>
                   </div>
-                  <div className="text-2xl font-bold text-summer-coral">
+                  <div className="text-2xl font-bold text-orange-600">
                     {result.recommendedWorkout.caloriesBurn * result.recommendedWorkout.sessions} kcal/tydzień
                   </div>
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Prognoza utraty wagi */}
-            <Card className="bg-gradient-to-r from-summer-coral to-summer-yellow text-white">
-              <CardHeader>
-                <CardTitle className="flex items-center text-white">
+            <div className="bg-gradient-to-r from-orange-500 to-yellow-500 text-white rounded-lg">
+              <div className="p-6 border-b border-white/20">
+                <h2 className="text-xl font-semibold flex items-center text-white">
                   <TrendingDown className="h-6 w-6 mr-2" />
                   Prognoza utraty wagi
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
+                </h2>
+              </div>
+              <div className="p-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <div className="text-center">
                     <div className="text-4xl font-bold">{result.weeklyWeightLoss.toFixed(1)} kg</div>
@@ -372,20 +366,20 @@ const BMRCalculator: React.FC = () => {
                 <div className="mt-4 text-center text-white/90">
                   🎯 Osiągniesz wagę {formData.targetWeight} kg w około {Math.ceil(result.timeToGoal)} tygodni!
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
             {/* Akcje */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Link to="/dieta">
-                <Button className="w-full bg-summer-mint hover:bg-summer-mint/90 text-white">
+                <button className="w-full bg-green-600 hover:bg-green-700 text-white py-3 px-4 rounded-md font-medium transition-colors">
                   🥗 Zamów catering
-                </Button>
+                </button>
               </Link>
               <Link to="/silownia">
-                <Button className="w-full bg-summer-coral hover:bg-summer-coral/90 text-white">
+                <button className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 px-4 rounded-md font-medium transition-colors">
                   🏋️‍♀️ Wybierz siłownię
-                </Button>
+                </button>
               </Link>
             </div>
           </div>
