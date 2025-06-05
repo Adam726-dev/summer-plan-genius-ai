@@ -4,10 +4,12 @@ import { useAuth } from '@/context/AuthContext';
 import { usePlan } from '@/context/PlanContext';
 import LoginForm from '@/components/LoginForm';
 import Navigation from '@/components/Navigation';
-import SectionCard from '@/components/SectionCard';
 import AIHelper from '@/components/AIHelper';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { ChevronRight } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
 
 const Index = () => {
@@ -52,13 +54,43 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Sections Grid */}
+        {/* Sections Grid - SectionCard functionality embedded */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {sectionsData.map((section) => (
-            <div key={section.id} className="animate-scale-in">
-              <SectionCard section={section} />
-            </div>
-          ))}
+          {sectionsData.map((section) => {
+            const hasChoice = choices[section.id as keyof typeof choices];
+            const selectedOption = hasChoice && section.options 
+              ? section.options.find(opt => opt.id === hasChoice)
+              : null;
+
+            return (
+              <div key={section.id} className="animate-scale-in">
+                <Link to={`/${section.id}`}>
+                  <Card className={`${section.color} border-0 shadow-lg card-hover cursor-pointer relative overflow-hidden`}>
+                    <CardContent className="p-6 text-center">
+                      <div className="text-4xl mb-3">{section.icon}</div>
+                      <h3 className="text-xl font-bold text-white mb-2">{section.name}</h3>
+                      <p className="text-white/90 text-sm mb-4">{section.description}</p>
+                      
+                      {hasChoice && selectedOption ? (
+                        <Badge variant="secondary" className="mb-3">
+                          ✓ {selectedOption.name}
+                        </Badge>
+                      ) : (
+                        <Badge variant="outline" className="mb-3 bg-white/20 text-white border-white/30">
+                          Nie wybrano
+                        </Badge>
+                      )}
+                      
+                      <div className="flex items-center justify-center text-white/80">
+                        <span className="text-sm">Wybierz opcję</span>
+                        <ChevronRight className="h-4 w-4 ml-1" />
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
+              </div>
+            );
+          })}
         </div>
 
         {/* AI Helper */}
