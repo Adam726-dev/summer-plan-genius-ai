@@ -5,7 +5,7 @@ import { UserProfile } from '@/types/userProfile';
 interface UserProfileContextType {
   profile: UserProfile;
   updateProfile: (data: Partial<UserProfile>) => void;
-  isProfileComplete: (section: 'fitness' | 'nutrition') => boolean;
+  isProfileComplete: (section: 'fitness' | 'nutrition' | 'activity' | 'travel') => boolean;
 }
 
 const UserProfileContext = createContext<UserProfileContextType | undefined>(undefined);
@@ -26,13 +26,22 @@ export const UserProfileProvider: React.FC<{ children: React.ReactNode }> = ({ c
     localStorage.setItem('user-profile', JSON.stringify(newProfile));
   };
 
-  const isProfileComplete = (section: 'fitness' | 'nutrition') => {
+  const isProfileComplete = (section: 'fitness' | 'nutrition' | 'activity' | 'travel') => {
     if (section === 'fitness') {
       return !!(profile.currentWeight && profile.height && profile.age && 
                profile.gender && profile.fitnessLevel && profile.fitnessGoals?.length);
     }
     if (section === 'nutrition') {
       return !!(profile.dailyCalories && profile.mealsPerDay);
+    }
+    if (section === 'activity') {
+      return !!(profile.personalityType && profile.activityPreferences?.length && 
+               profile.energyLevel && profile.socialPreference);
+    }
+    if (section === 'travel') {
+      return !!(profile.travelBudget && profile.travelStyle && 
+               profile.accommodationPreference && profile.transportPreference && 
+               profile.destinationPreferences?.length && profile.travelCompanions);
     }
     return false;
   };

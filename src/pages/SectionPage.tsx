@@ -6,6 +6,9 @@ import { useUserProfile } from '@/context/UserProfileContext';
 import Navigation from '@/components/Navigation';
 import FitnessProfileForm from '@/components/FitnessProfileForm';
 import NutritionProfileForm from '@/components/NutritionProfileForm';
+import ActivityProfileForm from '@/components/ActivityProfileForm';
+import TravelProfileForm from '@/components/TravelProfileForm';
+import MoodEnergyProfileForm from '@/components/MoodEnergyProfileForm';
 import { ArrowLeft, Check } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
 import { toast } from 'sonner';
@@ -15,6 +18,7 @@ const SectionPage: React.FC = () => {
   const { choices, updateChoice } = usePlan();
   const { isProfileComplete } = useUserProfile();
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [showMoodTracker, setShowMoodTracker] = useState(false);
   
   const section = sectionsData.find(s => s.id === sectionId);
   
@@ -36,8 +40,10 @@ const SectionPage: React.FC = () => {
   const selectedOptionId = choices[section.id as keyof typeof choices];
 
   // Sprawdź czy potrzebny jest profil użytkownika dla tej sekcji
-  const needsProfile = section.id === 'silownia' || section.id === 'dieta';
-  const profileType = section.id === 'silownia' ? 'fitness' : 'nutrition';
+  const needsProfile = ['silownia', 'dieta', 'imprezy', 'wakacje'].includes(section.id);
+  const profileType = section.id === 'silownia' ? 'fitness' : 
+                     section.id === 'dieta' ? 'nutrition' :
+                     section.id === 'imprezy' ? 'activity' : 'travel';
   const hasRequiredProfile = needsProfile ? isProfileComplete(profileType) : true;
 
   const handleSelectOption = (optionId: number) => {
@@ -49,10 +55,33 @@ const SectionPage: React.FC = () => {
 
   const handleProfileComplete = () => {
     setShowProfileForm(false);
+    setShowMoodTracker(false);
     toast("Profil uzupełniony! 🎯", {
       description: "Teraz możesz zobaczyć spersonalizowane opcje",
     });
   };
+
+  // Pokaż Mood & Energy Tracker dla wszystkich sekcji z profilem (oprócz początkowego formularza)
+  if (needsProfile && hasRequiredProfile && showMoodTracker) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+        <Navigation />
+        
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Link to="/">
+              <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Powróć do strony głównej
+              </button>
+            </Link>
+          </div>
+
+          <MoodEnergyProfileForm onComplete={handleProfileComplete} />
+        </main>
+      </div>
+    );
+  }
 
   // Pokaż formularz profilu jeśli potrzebny i nie został uzupełniony
   if (needsProfile && (!hasRequiredProfile || showProfileForm)) {
@@ -76,6 +105,14 @@ const SectionPage: React.FC = () => {
           
           {section.id === 'dieta' && (
             <NutritionProfileForm onComplete={handleProfileComplete} />
+          )}
+
+          {section.id === 'imprezy' && (
+            <ActivityProfileForm onComplete={handleProfileComplete} />
+          )}
+
+          {section.id === 'wakacje' && (
+            <TravelProfileForm onComplete={handleProfileComplete} />
           )}
         </main>
       </div>
@@ -102,12 +139,24 @@ const SectionPage: React.FC = () => {
             <p className="text-xl text-gray-600">{section.description}</p>
             
             {needsProfile && hasRequiredProfile && (
-              <button
-                onClick={() => setShowProfileForm(true)}
-                className="mt-4 text-sm text-blue-600 hover:text-blue-800 underline"
-              >
-                ⚙️ Edytuj profil {section.id === 'silownia' ? 'fitness' : 'żywieniowy'}
-              </button>
+              <div className="mt-4 flex gap-4 justify-center">
+                <button
+                  onClick={() => setShowProfileForm(true)}
+                  className="text-sm text-blue-600 hover:text-blue-800 underline"
+                >
+                  ⚙️ Edytuj profil {
+                    section.id === 'silownia' ? 'fitness' : 
+                    section.id === 'dieta' ? 'żywieniowy' :
+                    section.id === 'imprezy' ? 'aktywności' : 'podróży'
+                  }
+                </button>
+                <button
+                  onClick={() => setShowMoodTracker(true)}
+                  className="text-sm text-green-600 hover:text-green-800 underline"
+                >
+                  📊 Aktualizuj nastrój i energię
+                </button>
+              </div>
             )}
           </div>
         </div>
@@ -121,7 +170,11 @@ const SectionPage: React.FC = () => {
             <p className="text-gray-700">
               {section.id === 'silownia' 
                 ? 'Personal Trainer AI przeanalizował Twoje cele i kondycję, aby pokazać najlepsze opcje treningowe.'
-                : 'Smart Meal Planner AI uwzględnił Twoje preferencje żywieniowe i cele kaloryczne.'
+                : section.id === 'dieta'
+                ? 'Smart Meal Planner AI uwzględnił Twoje preferencje żywieniowe i cele kaloryczne.'
+                : section.id === 'imprezy'
+                ? 'Weekend Activity Optimizer AI dobrał imprezy idealne dla Twojego typu osobowości i poziomu energii.'
+                : 'Travel Route Planner AI zaplanował opcje wakacyjne dopasowane do Twojego budżetu i stylu podróżowania.'
               }
             </p>
           </div>
@@ -160,7 +213,11 @@ const SectionPage: React.FC = () => {
                           <span className="mr-1">🎯</span>
                           {section.id === 'silownia' 
                             ? 'Dopasowane do Twojego poziomu i celów'
-                            : 'Uwzględnia Twoje preferencje żywieniowe'
+                            : section.id === 'dieta'
+                            ? 'Uwzględnia Twoje preferencje żywieniowe'
+                            : section.id === 'imprezy'
+                            ? 'Dobrane pod Twoją osobowość i energię'
+                            : 'Zaplanowane pod Twój budżet i styl'
                           }
                         </div>
                       </div>
