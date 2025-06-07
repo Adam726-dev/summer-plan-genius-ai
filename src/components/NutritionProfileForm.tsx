@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useUserProfile } from '@/context/UserProfileContext';
 
@@ -171,7 +170,7 @@ const NutritionProfileForm: React.FC<NutritionProfileFormProps> = ({ onComplete 
                   type="radio"
                   value={time.value}
                   checked={formData.cookingTime === time.value}
-                  onChange={(e) => setFormData({ ...formData, cookingTime: e.target.value })}
+                  onChange={(e) => setFormData({ ...formData, cookingTime: e.target.value as 'quick' | 'medium' | 'elaborate' })}
                   className="mr-2"
                 />
                 {time.label}
