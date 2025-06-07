@@ -10,10 +10,10 @@ const ActivityProfileForm: React.FC<ActivityProfileFormProps> = ({ onComplete })
   const { profile, updateProfile } = useUserProfile();
   
   const [formData, setFormData] = useState({
-    personalityType: profile.personalityType || '',
-    activityPreferences: profile.activityPreferences || [],
-    energyLevel: profile.energyLevel || '',
-    socialPreference: profile.socialPreference || '',
+    personalityType: profile.personalityType || '' as '' | 'introvert' | 'extrovert' | 'ambivert',
+    activityPreferences: profile.activityPreferences || [] as ('outdoor' | 'indoor' | 'cultural' | 'sports' | 'social' | 'relaxing')[],
+    energyLevel: profile.energyLevel || '' as '' | 'low' | 'medium' | 'high',
+    socialPreference: profile.socialPreference || '' as '' | 'alone' | 'small_group' | 'large_group' | 'any',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -22,7 +22,7 @@ const ActivityProfileForm: React.FC<ActivityProfileFormProps> = ({ onComplete })
     onComplete();
   };
 
-  const handleActivityPreferenceChange = (preference: string) => {
+  const handleActivityPreferenceChange = (preference: 'outdoor' | 'indoor' | 'cultural' | 'sports' | 'social' | 'relaxing') => {
     setFormData(prev => ({
       ...prev,
       activityPreferences: prev.activityPreferences.includes(preference)
@@ -93,8 +93,8 @@ const ActivityProfileForm: React.FC<ActivityProfileFormProps> = ({ onComplete })
               <label key={activity.value} className="flex items-center">
                 <input
                   type="checkbox"
-                  checked={formData.activityPreferences.includes(activity.value)}
-                  onChange={() => handleActivityPreferenceChange(activity.value)}
+                  checked={formData.activityPreferences.includes(activity.value as 'outdoor' | 'indoor' | 'cultural' | 'sports' | 'social' | 'relaxing')}
+                  onChange={() => handleActivityPreferenceChange(activity.value as 'outdoor' | 'indoor' | 'cultural' | 'sports' | 'social' | 'relaxing')}
                   className="mr-2"
                 />
                 {activity.label}

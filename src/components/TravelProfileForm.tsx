@@ -11,11 +11,11 @@ const TravelProfileForm: React.FC<TravelProfileFormProps> = ({ onComplete }) => 
   
   const [formData, setFormData] = useState({
     travelBudget: profile.travelBudget || '',
-    travelStyle: profile.travelStyle || '',
-    accommodationPreference: profile.accommodationPreference || '',
-    transportPreference: profile.transportPreference || '',
-    destinationPreferences: profile.destinationPreferences || [],
-    travelCompanions: profile.travelCompanions || '',
+    travelStyle: profile.travelStyle || '' as '' | 'luxury' | 'mid_range' | 'budget' | 'backpacker',
+    accommodationPreference: profile.accommodationPreference || '' as '' | 'hotel' | 'airbnb' | 'hostel' | 'camping',
+    transportPreference: profile.transportPreference || '' as '' | 'plane' | 'car' | 'train' | 'bus',
+    destinationPreferences: profile.destinationPreferences || [] as ('beach' | 'mountains' | 'cities' | 'countryside' | 'historical')[],
+    travelCompanions: profile.travelCompanions || '' as '' | 'solo' | 'partner' | 'friends' | 'family',
   });
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -27,7 +27,7 @@ const TravelProfileForm: React.FC<TravelProfileFormProps> = ({ onComplete }) => 
     onComplete();
   };
 
-  const handleDestinationChange = (destination: string) => {
+  const handleDestinationChange = (destination: 'beach' | 'mountains' | 'cities' | 'countryside' | 'historical') => {
     setFormData(prev => ({
       ...prev,
       destinationPreferences: prev.destinationPreferences.includes(destination)
@@ -155,8 +155,8 @@ const TravelProfileForm: React.FC<TravelProfileFormProps> = ({ onComplete }) => 
               <label key={dest.value} className="flex items-center">
                 <input
                   type="checkbox"
-                  checked={formData.destinationPreferences.includes(dest.value)}
-                  onChange={() => handleDestinationChange(dest.value)}
+                  checked={formData.destinationPreferences.includes(dest.value as 'beach' | 'mountains' | 'cities' | 'countryside' | 'historical')}
+                  onChange={() => handleDestinationChange(dest.value as 'beach' | 'mountains' | 'cities' | 'countryside' | 'historical')}
                   className="mr-2"
                 />
                 {dest.label}

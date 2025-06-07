@@ -11,9 +11,9 @@ const MoodEnergyProfileForm: React.FC<MoodEnergyProfileFormProps> = ({ onComplet
   
   const [formData, setFormData] = useState({
     sleepHours: profile.sleepHours || '',
-    stressLevel: profile.stressLevel || '',
-    workLifeBalance: profile.workLifeBalance || '',
-    currentMood: profile.currentMood || '',
+    stressLevel: profile.stressLevel || '' as '' | 'low' | 'medium' | 'high',
+    workLifeBalance: profile.workLifeBalance || '' as '' | 'poor' | 'okay' | 'good' | 'excellent',
+    currentMood: profile.currentMood || '' as '' | 'energetic' | 'tired' | 'stressed' | 'happy' | 'neutral',
     restDaysPreference: profile.restDaysPreference || '',
   });
 
