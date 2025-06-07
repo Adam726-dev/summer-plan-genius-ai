@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useUserProfile } from '@/context/UserProfileContext';
 
@@ -19,11 +18,27 @@ const MoodEnergyProfileForm: React.FC<MoodEnergyProfileFormProps> = ({ onComplet
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile({
-      ...formData,
-      sleepHours: formData.sleepHours ? Number(formData.sleepHours) : undefined,
-      restDaysPreference: formData.restDaysPreference ? Number(formData.restDaysPreference) : undefined
-    });
+    
+    // Filter out empty string values
+    const updateData: any = {};
+    
+    if (formData.sleepHours) {
+      updateData.sleepHours = Number(formData.sleepHours);
+    }
+    if (formData.restDaysPreference) {
+      updateData.restDaysPreference = Number(formData.restDaysPreference);
+    }
+    if (formData.stressLevel) {
+      updateData.stressLevel = formData.stressLevel;
+    }
+    if (formData.workLifeBalance) {
+      updateData.workLifeBalance = formData.workLifeBalance;
+    }
+    if (formData.currentMood) {
+      updateData.currentMood = formData.currentMood;
+    }
+    
+    updateProfile(updateData);
     onComplete();
   };
 

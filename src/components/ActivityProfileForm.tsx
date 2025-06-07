@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useUserProfile } from '@/context/UserProfileContext';
 
@@ -18,7 +17,23 @@ const ActivityProfileForm: React.FC<ActivityProfileFormProps> = ({ onComplete })
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile(formData);
+    
+    // Filter out empty string values
+    const updateData: any = {
+      activityPreferences: formData.activityPreferences,
+    };
+    
+    if (formData.personalityType) {
+      updateData.personalityType = formData.personalityType;
+    }
+    if (formData.energyLevel) {
+      updateData.energyLevel = formData.energyLevel;
+    }
+    if (formData.socialPreference) {
+      updateData.socialPreference = formData.socialPreference;
+    }
+    
+    updateProfile(updateData);
     onComplete();
   };
 
@@ -34,7 +49,7 @@ const ActivityProfileForm: React.FC<ActivityProfileFormProps> = ({ onComplete })
   const personalityTypes = [
     { value: 'introvert', label: 'Introweryk - preferuję spokojne aktywności' },
     { value: 'extrovert', label: 'Ekstrawertyk - uwielbiam towarzyskie imprezy' },
-    { value: 'ambivert', label: 'Ambiwertyк - zależy od nastroju' }
+    { value: 'ambivert', label: 'Ambiwertyk - zależy od nastroju' }
   ];
 
   const activities = [

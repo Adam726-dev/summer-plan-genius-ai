@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useUserProfile } from '@/context/UserProfileContext';
 
@@ -20,10 +19,29 @@ const TravelProfileForm: React.FC<TravelProfileFormProps> = ({ onComplete }) => 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    updateProfile({
-      ...formData,
-      travelBudget: formData.travelBudget ? Number(formData.travelBudget) : undefined
-    });
+    
+    // Filter out empty string values
+    const updateData: any = {
+      destinationPreferences: formData.destinationPreferences,
+    };
+    
+    if (formData.travelBudget) {
+      updateData.travelBudget = Number(formData.travelBudget);
+    }
+    if (formData.travelStyle) {
+      updateData.travelStyle = formData.travelStyle;
+    }
+    if (formData.accommodationPreference) {
+      updateData.accommodationPreference = formData.accommodationPreference;
+    }
+    if (formData.transportPreference) {
+      updateData.transportPreference = formData.transportPreference;
+    }
+    if (formData.travelCompanions) {
+      updateData.travelCompanions = formData.travelCompanions;
+    }
+    
+    updateProfile(updateData);
     onComplete();
   };
 
