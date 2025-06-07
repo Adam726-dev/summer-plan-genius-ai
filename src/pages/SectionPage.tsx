@@ -1,8 +1,11 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { usePlan } from '@/context/PlanContext';
+import { useUserProfile } from '@/context/UserProfileContext';
 import Navigation from '@/components/Navigation';
+import FitnessProfileForm from '@/components/FitnessProfileForm';
+import NutritionProfileForm from '@/components/NutritionProfileForm';
 import { ArrowLeft, Check } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
 import { toast } from 'sonner';
@@ -10,6 +13,8 @@ import { toast } from 'sonner';
 const SectionPage: React.FC = () => {
   const { sectionId } = useParams<{ sectionId: string }>();
   const { choices, updateChoice } = usePlan();
+  const { isProfileComplete } = useUserProfile();
+  const [showProfileForm, setShowProfileForm] = useState(false);
   
   const section = sectionsData.find(s => s.id === sectionId);
   
@@ -30,12 +35,52 @@ const SectionPage: React.FC = () => {
 
   const selectedOptionId = choices[section.id as keyof typeof choices];
 
+  // Sprawdź czy potrzebny jest profil użytkownika dla tej sekcji
+  const needsProfile = section.id === 'silownia' || section.id === 'dieta';
+  const profileType = section.id === 'silownia' ? 'fitness' : 'nutrition';
+  const hasRequiredProfile = needsProfile ? isProfileComplete(profileType) : true;
+
   const handleSelectOption = (optionId: number) => {
     updateChoice(section.id as keyof typeof choices, optionId);
     toast("Świetny wybór! 🎉", {
       description: `Dodano ${section.name.toLowerCase()} do Twojego planu`,
     });
   };
+
+  const handleProfileComplete = () => {
+    setShowProfileForm(false);
+    toast("Profil uzupełniony! 🎯", {
+      description: "Teraz możesz zobaczyć spersonalizowane opcje",
+    });
+  };
+
+  // Pokaż formularz profilu jeśli potrzebny i nie został uzupełniony
+  if (needsProfile && (!hasRequiredProfile || showProfileForm)) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+        <Navigation />
+        
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Link to="/">
+              <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Powróć do strony głównej
+              </button>
+            </Link>
+          </div>
+
+          {section.id === 'silownia' && (
+            <FitnessProfileForm onComplete={handleProfileComplete} />
+          )}
+          
+          {section.id === 'dieta' && (
+            <NutritionProfileForm onComplete={handleProfileComplete} />
+          )}
+        </main>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
@@ -55,8 +100,32 @@ const SectionPage: React.FC = () => {
             <div className="text-6xl mb-4">{section.icon}</div>
             <h1 className="text-4xl font-bold text-gray-900 mb-2">{section.name}</h1>
             <p className="text-xl text-gray-600">{section.description}</p>
+            
+            {needsProfile && hasRequiredProfile && (
+              <button
+                onClick={() => setShowProfileForm(true)}
+                className="mt-4 text-sm text-blue-600 hover:text-blue-800 underline"
+              >
+                ⚙️ Edytuj profil {section.id === 'silownia' ? 'fitness' : 'żywieniowy'}
+              </button>
+            )}
           </div>
         </div>
+
+        {/* AI Enhancement Notice */}
+        {needsProfile && hasRequiredProfile && (
+          <div className="mb-8 bg-gradient-to-r from-blue-100 to-green-100 border border-blue-200 rounded-lg p-6">
+            <h3 className="font-bold text-lg mb-2 text-blue-700">
+              🤖 AI dostosowało opcje do Twojego profilu!
+            </h3>
+            <p className="text-gray-700">
+              {section.id === 'silownia' 
+                ? 'Personal Trainer AI przeanalizował Twoje cele i kondycję, aby pokazać najlepsze opcje treningowe.'
+                : 'Smart Meal Planner AI uwzględnił Twoje preferencje żywieniowe i cele kaloryczne.'
+              }
+            </p>
+          </div>
+        )}
 
         {/* Options Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
@@ -83,6 +152,19 @@ const SectionPage: React.FC = () => {
                     
                     <h3 className="text-xl font-bold text-gray-900 mb-2">{option.name}</h3>
                     <p className="text-gray-600 mb-3">{option.description}</p>
+                    
+                    {/* AI Enhancement Badge */}
+                    {needsProfile && hasRequiredProfile && (
+                      <div className="mb-3 bg-blue-50 border border-blue-200 rounded-md p-2">
+                        <div className="flex items-center text-xs text-blue-700">
+                          <span className="mr-1">🎯</span>
+                          {section.id === 'silownia' 
+                            ? 'Dopasowane do Twojego poziomu i celów'
+                            : 'Uwzględnia Twoje preferencje żywieniowe'
+                          }
+                        </div>
+                      </div>
+                    )}
                     
                     <div className="flex items-center justify-between mb-4">
                       <span className="text-2xl font-bold text-summer-blue">{option.price}</span>
