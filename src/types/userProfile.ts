@@ -39,4 +39,27 @@ export interface UserProfile {
   workLifeBalance?: 'poor' | 'okay' | 'good' | 'excellent';
   currentMood?: 'energetic' | 'tired' | 'stressed' | 'happy' | 'neutral';
   restDaysPreference?: number;
+  
+  // Social Companion Matcher data
+  lookingForCompanions?: boolean;
+  companionPreferences?: ('workout_buddy' | 'party_partner' | 'travel_companion' | 'diet_accountability')[];
+  teamChallengeInterest?: 'high' | 'medium' | 'low';
+  socialGoals?: ('motivation' | 'accountability' | 'fun' | 'learning')[];
+  communicationStyle?: 'direct' | 'encouraging' | 'competitive' | 'supportive';
+  
+  // Weather-Smart Planner data
+  weatherSensitivity?: 'high' | 'medium' | 'low';
+  indoorAlternatives?: ('gym' | 'yoga_studio' | 'mall_walking' | 'home_workout')[];
+  outdoorPreferences?: ('running' | 'cycling' | 'hiking' | 'beach_sports' | 'park_activities')[];
+  temperaturePreference?: 'hot' | 'mild' | 'cool' | 'any';
+  
+  // Progress Predictor data
+  trackingGoals?: ('weight_loss' | 'muscle_gain' | 'endurance' | 'strength' | 'flexibility')[];
+  commitmentLevel?: 'low' | 'medium' | 'high' | 'extreme';
+  motivationType?: 'visual_progress' | 'data_driven' | 'social_validation' | 'personal_satisfaction';
+  timelineGoals?: {
+    oneMonth?: string;
+    twoMonths?: string;
+    summer?: string;
+  };
 }

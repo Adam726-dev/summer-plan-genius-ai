@@ -9,6 +9,9 @@ import NutritionProfileForm from '@/components/NutritionProfileForm';
 import ActivityProfileForm from '@/components/ActivityProfileForm';
 import TravelProfileForm from '@/components/TravelProfileForm';
 import MoodEnergyProfileForm from '@/components/MoodEnergyProfileForm';
+import SocialCompanionForm from '@/components/SocialCompanionForm';
+import WeatherSmartForm from '@/components/WeatherSmartForm';
+import ProgressPredictorForm from '@/components/ProgressPredictorForm';
 import { ArrowLeft, Check } from 'lucide-react';
 import { sectionsData } from '@/data/sections';
 import { toast } from 'sonner';
@@ -19,6 +22,9 @@ const SectionPage: React.FC = () => {
   const { isProfileComplete } = useUserProfile();
   const [showProfileForm, setShowProfileForm] = useState(false);
   const [showMoodTracker, setShowMoodTracker] = useState(false);
+  const [showSocialForm, setShowSocialForm] = useState(false);
+  const [showWeatherForm, setShowWeatherForm] = useState(false);
+  const [showProgressForm, setShowProgressForm] = useState(false);
   
   const section = sectionsData.find(s => s.id === sectionId);
   
@@ -46,6 +52,11 @@ const SectionPage: React.FC = () => {
                      section.id === 'imprezy' ? 'activity' : 'travel';
   const hasRequiredProfile = needsProfile ? isProfileComplete(profileType) : true;
 
+  // Sprawdź dodatkowe profile AI
+  const hasSocialProfile = isProfileComplete('social');
+  const hasWeatherProfile = isProfileComplete('weather');
+  const hasProgressProfile = isProfileComplete('progress');
+
   const handleSelectOption = (optionId: number) => {
     updateChoice(section.id as keyof typeof choices, optionId);
     toast("Świetny wybór! 🎉", {
@@ -56,10 +67,71 @@ const SectionPage: React.FC = () => {
   const handleProfileComplete = () => {
     setShowProfileForm(false);
     setShowMoodTracker(false);
+    setShowSocialForm(false);
+    setShowWeatherForm(false);
+    setShowProgressForm(false);
     toast("Profil uzupełniony! 🎯", {
       description: "Teraz możesz zobaczyć spersonalizowane opcje",
     });
   };
+
+  // Show AI enhancement forms
+  if (showSocialForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Link to="/">
+              <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Powróć do strony głównej
+              </button>
+            </Link>
+          </div>
+          <SocialCompanionForm onComplete={handleProfileComplete} />
+        </main>
+      </div>
+    );
+  }
+
+  if (showWeatherForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Link to="/">
+              <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Powróć do strony głównej
+              </button>
+            </Link>
+          </div>
+          <WeatherSmartForm onComplete={handleProfileComplete} />
+        </main>
+      </div>
+    );
+  }
+
+  if (showProgressForm) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-mint-50">
+        <Navigation />
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mb-8">
+            <Link to="/">
+              <button className="mb-4 flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <ArrowLeft className="h-4 w-4 mr-2" />
+                Powróć do strony głównej
+              </button>
+            </Link>
+          </div>
+          <ProgressPredictorForm onComplete={handleProfileComplete} />
+        </main>
+      </div>
+    );
+  }
 
   // Pokaż Mood & Energy Tracker dla wszystkich sekcji z profilem (oprócz początkowego formularza)
   if (needsProfile && hasRequiredProfile && showMoodTracker) {
@@ -139,7 +211,7 @@ const SectionPage: React.FC = () => {
             <p className="text-xl text-gray-600">{section.description}</p>
             
             {needsProfile && hasRequiredProfile && (
-              <div className="mt-4 flex gap-4 justify-center">
+              <div className="mt-4 flex flex-wrap gap-2 justify-center">
                 <button
                   onClick={() => setShowProfileForm(true)}
                   className="text-sm text-blue-600 hover:text-blue-800 underline"
@@ -156,6 +228,24 @@ const SectionPage: React.FC = () => {
                 >
                   📊 Aktualizuj nastrój i energię
                 </button>
+                <button
+                  onClick={() => setShowSocialForm(true)}
+                  className="text-sm text-purple-600 hover:text-purple-800 underline"
+                >
+                  🤝 {hasSocialProfile ? 'Edytuj' : 'Skonfiguruj'} Social Companion
+                </button>
+                <button
+                  onClick={() => setShowWeatherForm(true)}
+                  className="text-sm text-orange-600 hover:text-orange-800 underline"
+                >
+                  🌤️ {hasWeatherProfile ? 'Edytuj' : 'Skonfiguruj'} Weather Planner
+                </button>
+                <button
+                  onClick={() => setShowProgressForm(true)}
+                  className="text-sm text-red-600 hover:text-red-800 underline"
+                >
+                  📈 {hasProgressProfile ? 'Edytuj' : 'Skonfiguruj'} Progress Predictor
+                </button>
               </div>
             )}
           </div>
@@ -167,7 +257,7 @@ const SectionPage: React.FC = () => {
             <h3 className="font-bold text-lg mb-2 text-blue-700">
               🤖 AI dostosowało opcje do Twojego profilu!
             </h3>
-            <p className="text-gray-700">
+            <p className="text-gray-700 mb-3">
               {section.id === 'silownia' 
                 ? 'Personal Trainer AI przeanalizował Twoje cele i kondycję, aby pokazać najlepsze opcje treningowe.'
                 : section.id === 'dieta'
@@ -177,6 +267,25 @@ const SectionPage: React.FC = () => {
                 : 'Travel Route Planner AI zaplanował opcje wakacyjne dopasowane do Twojego budżetu i stylu podróżowania.'
               }
             </p>
+            
+            {/* Additional AI features info */}
+            <div className="flex flex-wrap gap-2 text-sm">
+              {hasSocialProfile && (
+                <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded">
+                  🤝 Social Companion aktywny
+                </span>
+              )}
+              {hasWeatherProfile && (
+                <span className="bg-orange-100 text-orange-700 px-2 py-1 rounded">
+                  🌤️ Weather Planner aktywny
+                </span>
+              )}
+              {hasProgressProfile && (
+                <span className="bg-red-100 text-red-700 px-2 py-1 rounded">
+                  📈 Progress Predictor aktywny
+                </span>
+              )}
+            </div>
           </div>
         )}
 

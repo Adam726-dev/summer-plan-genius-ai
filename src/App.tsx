@@ -22,10 +22,7 @@ const App = () => (
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<Index />} />
-              <Route path="/dieta" element={<SectionPage />} />
-              <Route path="/silownia" element={<SectionPage />} />
-              <Route path="/imprezy" element={<SectionPage />} />
-              <Route path="/wakacje" element={<SectionPage />} />
+              <Route path="/:sectionId" element={<SectionPage />} />
               <Route path="/kalkulator-bmr" element={<BMRCalculator />} />
               <Route path="/podsumowanie" element={<Summary />} />
               <Route path="*" element={<NotFound />} />
